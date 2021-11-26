@@ -24,6 +24,9 @@ jobs:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Module
+      uses: actions/checkout@v2
+
     - name: Create a Release
       uses: hennejg/github-tag-action@v4.3.1
       with:
