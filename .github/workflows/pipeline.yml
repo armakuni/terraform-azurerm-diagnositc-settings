@@ -30,4 +30,5 @@ jobs:
     - name: Create a Release
       uses: hennejg/github-tag-action@v4.3.1
       with:
+        release_branches: main
         github_token: ${{ secrets.GITHUB_TOKEN }}
