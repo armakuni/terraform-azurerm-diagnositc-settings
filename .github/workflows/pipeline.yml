@@ -1,0 +1,30 @@
+name: Test and Release Module
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  test:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Module
+      uses: actions/checkout@v2
+
+    - name: Install TFSec
+      run: wget -O - -q "$(wget -q https://api.github.com/repos/aquasecurity/tfsec/releases/latest -O - | grep -o -E "https://.+?tfsec-linux-amd64" | head -n1)" > tfsec
+
+    - name: Run TFSec
+      run: chmod +x tfsec && ./tfsec
+
+  release:
+    name: Create Release
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create a Release
+      uses: hennejg/github-tag-action@v4.3.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
